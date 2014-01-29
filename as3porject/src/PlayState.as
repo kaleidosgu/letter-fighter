@@ -13,6 +13,7 @@ package
 		[Embed(source = "../res/image/spaceman.png")] private static var ImgSpaceman:Class;
 		[Embed(source = "../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
 		[Embed(source = "../res/image/bullet.png")] private static var bulletPicture:Class;
+		[Embed(source = "../res/image/startcloud3.png")] private static var backgroundPicture:Class;
 		
 		// Some static constants for the size of the tilemap tiles
 		private const TILE_WIDTH:uint = 8;
@@ -31,6 +32,9 @@ package
 		private var player:FlxSprite;
 		
 		private var _bulletArray:Array = new Array();
+		private var _objectKeyString:Object = new Object();
+		private var _backgroundSprite:FlxSprite;
+		private var _speedBackGround:Number = 0;
 		public function PlayState()
 		{
 			
@@ -38,12 +42,30 @@ package
 		
 		override public function create():void
 		{
+			_objectKeyString["H"] = "H";
+			_objectKeyString["L"] = "L";
+			_objectKeyString["O"] = "O";
+			_objectKeyString["V"] = "V";
+			_objectKeyString["X"] = "X";
+			_objectKeyString["Y"] = "Y";
+			_objectKeyString["Z"] = "Z";
 			_showWidth 	= TILE_WIDTH * _showScale ;
 			_showHeight	= TILE_HEIGHT * _showScale;
 			FlxG.framerate = 50;
 			FlxG.flashFramerate = 50;
 			
 			highlightBox = new FlxObject(0, 0, _showWidth, _showHeight);
+
+			_backgroundSprite = new FlxSprite( 0, 0 );
+			_backgroundSprite.loadGraphic( backgroundPicture, true, true, 600, 600 );
+			
+			_backgroundSprite.drag.x = 2;
+			_backgroundSprite.drag.y = 2;
+			_speedBackGround = _backgroundSprite.drag.x;
+			
+			_backgroundSprite.maxVelocity.x = 100;
+			_backgroundSprite.maxVelocity.y = 100;
+			add( _backgroundSprite );
 			
 			setupPlayer();
 			setupText();
@@ -57,6 +79,13 @@ package
 			
 			updatePlayer();
 			destroyBulletIfOutOfBound();
+			bulletTypeChangeCheck();
+				trace("no" + _backgroundSprite.y);
+			if ( _backgroundSprite.y < -330 )
+			{
+				_backgroundSprite.y = 0;
+			}
+			_backgroundSprite.y -= _speedBackGround;
 			super.update();
 		}
 		private function getHightLightBoxPoint():FlxPoint
@@ -82,7 +111,7 @@ package
 		private function generateBullet( initX:Number, initY:Number ):void
 		{
 			var newBullet:FlxSprite = new FlxSprite( initX, initY );
-			newBullet.loadGraphic(bulletPicture, true, true, 8);
+			newBullet.loadGraphic(bulletPicture, false, false, 8);
 			
 			newBullet.width = 8;
 			newBullet.height = 8;
@@ -136,6 +165,24 @@ package
 				bulletIndex++;
 			}
 		}
+		private function bulletTypeChangeCheck():void
+		{
+			var typeString:String = "";
+			for ( var strKey:String in _objectKeyString )
+			{
+				var strValue:String = _objectKeyString[strKey];
+				
+				if ( FlxG.keys.justReleased( strValue ) )
+				{
+					typeString = strValue;
+					break;
+				}
+			}
+			if ( typeString.length > 0 )
+			{
+				_textNotify.text = "[" + typeString + "] key has equiped!";	
+			}
+		}
 		private function setupPlayer():void
 		{
 			player = new FlxSprite(128, 128);
@@ -151,8 +198,8 @@ package
 			player.drag.x = 640;
 			player.drag.y = 640;
 			//player.acceleration.y = 420;
-			player.maxVelocity.x = 240;
-			player.maxVelocity.y = 240;
+			player.maxVelocity.x = 200;
+			player.maxVelocity.y = 200;
 			
 			//animations
 			player.addAnimation("idle", [0]);
@@ -163,7 +210,7 @@ package
 		}
 		private function updatePlayer():void
 		{
-			playerBoundMap();
+			playerBoundRest();
 			player.acceleration.x = 0;
 			player.acceleration.y = 0;
 			if(FlxG.keys.LEFT)
@@ -191,7 +238,7 @@ package
 			}
 		}
 		
-		private function playerBoundMap():void
+		private function playerBoundRest():void
 		{
 			var playerX:Number = player.x;
 			var playerY:Number = player.y;
