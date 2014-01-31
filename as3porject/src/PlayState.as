@@ -10,9 +10,10 @@ package
 
 	public class PlayState extends FlxState
 	{	
-		[Embed(source = "../res/image/spaceman.png")] private static var ImgSpaceman:Class;
+		[Embed(source = "../res/image/fighter.png")] private static var ImgFighter:Class;
 		[Embed(source = "../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
-		[Embed(source = "../res/image/bullet.png")] private static var bulletPicture:Class;
+		[Embed(source = "../res/music/kraftwerk_aerodynamik.mp3")] private var BackgroundMusic:Class;
+		[Embed(source = "../res/image/bullet2.png")] private static var bulletPicture:Class;
 		[Embed(source = "../res/image/startcloud3.png")] private static var backgroundPicture:Class;
 		
 		// Some static constants for the size of the tilemap tiles
@@ -26,7 +27,7 @@ package
 		private var _textNotify:FlxText = null;
 		private var _systemNotify:FlxText = null;
 		
-		private var _systemText:String = "System:"
+		private var _systemText:String = "Music by Kraftwerk Aerodynamik";
 		private var highlightBox:FlxObject;
 		
 		private var player:FlxSprite;
@@ -60,7 +61,7 @@ package
 			_backgroundSprite.loadGraphic( backgroundPicture, true, true, 600, 600 );
 			
 			_backgroundSprite.drag.x = 2;
-			_backgroundSprite.drag.y = 2;
+			_backgroundSprite.drag.y = 1;
 			_speedBackGround = _backgroundSprite.drag.x;
 			
 			_backgroundSprite.maxVelocity.x = 100;
@@ -69,6 +70,8 @@ package
 			
 			setupPlayer();
 			setupText();
+			
+			FlxG.play( BackgroundMusic );
 		}
 
 		override public function update():void
@@ -80,7 +83,6 @@ package
 			updatePlayer();
 			destroyBulletIfOutOfBound();
 			bulletTypeChangeCheck();
-				trace("no" + _backgroundSprite.y);
 			if ( _backgroundSprite.y < -330 )
 			{
 				_backgroundSprite.y = 0;
@@ -110,11 +112,11 @@ package
 		
 		private function generateBullet( initX:Number, initY:Number ):void
 		{
-			var newBullet:FlxSprite = new FlxSprite( initX, initY );
-			newBullet.loadGraphic(bulletPicture, false, false, 8);
+			var newBullet:FlxSprite = new FlxSprite( 0, 0 );
+			newBullet.loadGraphic(bulletPicture, false, false, 4,10);
 			
-			newBullet.width = 8;
-			newBullet.height = 8;
+			newBullet.width = 4;
+			newBullet.height = 10;
 			newBullet.offset.x = 1;
 			newBullet.offset.y = 1;
 			
@@ -128,6 +130,8 @@ package
 			
 			add(newBullet);
 			_bulletArray.push ( newBullet );
+			newBullet.x = initX;
+			newBullet.y = initY - newBullet.height / 2;
 		}
 		private function checkBulletBound( bullet:FlxSprite ):Boolean
 		{
@@ -185,12 +189,12 @@ package
 		}
 		private function setupPlayer():void
 		{
-			player = new FlxSprite(128, 128);
-			player.loadGraphic(ImgSpaceman, true, true, 16);
+			player = new FlxSprite(17, 17);
+			player.loadGraphic(ImgFighter, true, true, 17);
 			
 			//bounding box tweaks
-			player.width = 14;
-			player.height = 14;
+			player.width = 16;
+			player.height = 17;
 			player.offset.x = 1;
 			player.offset.y = 1;
 			
@@ -234,7 +238,7 @@ package
 			if ( FlxG.keys.justReleased("SPACE" ) )
 			{
 				FlxG.play( SoundEffect );	
-				generateBullet( player.x + player.width / 2, player.y );
+				generateBullet( player.x + player.width / 2 - 1, player.y );
 			}
 		}
 		
