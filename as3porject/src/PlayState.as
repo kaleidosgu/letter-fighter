@@ -10,11 +10,14 @@ package
 
 	public class PlayState extends FlxState
 	{	
-		[Embed(source = "../res/image/fighter.png")] private static var ImgFighter:Class;
+		[Embed(source = "../res/image/fighter2.png")] private static var ImgFighter:Class;
 		[Embed(source = "../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
 		[Embed(source = "../res/music/kraftwerk_aerodynamik.mp3")] private var BackgroundMusic:Class;
-		[Embed(source = "../res/image/bullet2.png")] private static var bulletPicture:Class;
+		[Embed(source = "../res/image/bullet3.png")] private static var bulletPicture:Class;
 		[Embed(source = "../res/image/startcloud3.png")] private static var backgroundPicture:Class;
+		//[Embed(source = "../res/image/enemy/enemyA.png")] private static var enemyPicture:Class;
+		[Embed(source = "../res/image/enemy/fontall.png")] private static var fontallPicture:Class;
+		
 		
 		// Some static constants for the size of the tilemap tiles
 		private const TILE_WIDTH:uint = 8;
@@ -36,6 +39,7 @@ package
 		private var _objectKeyString:Object = new Object();
 		private var _backgroundSprite:FlxSprite;
 		private var _speedBackGround:Number = 0;
+		private var enemy:FlxSprite;
 		public function PlayState()
 		{
 			
@@ -68,10 +72,20 @@ package
 			_backgroundSprite.maxVelocity.y = 100;
 			add( _backgroundSprite );
 			
+			
+			enemy = new FlxSprite( 0, 0 );
+			enemy.loadGraphic( fontallPicture, true, true, 12 );
+			enemy.width 	= 12;
+			enemy.height	= 12;
+			enemy.addAnimation( "abc", [0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25], 3 );
+			//enemy.frame = 3;
+			
+			add( enemy );
+			
 			setupPlayer();
 			setupText();
 			
-			FlxG.play( BackgroundMusic );
+			//FlxG.play( BackgroundMusic );
 		}
 
 		override public function update():void
@@ -88,6 +102,7 @@ package
 				_backgroundSprite.y = 0;
 			}
 			_backgroundSprite.y -= _speedBackGround;
+			enemy.play("abc");
 			super.update();
 		}
 		private function getHightLightBoxPoint():FlxPoint
@@ -123,7 +138,6 @@ package
 			//basic player physics
 			newBullet.drag.x = 640;
 			newBullet.drag.y = 640;
-			//player.acceleration.y = 420;
 			newBullet.maxVelocity.x = 80;
 			newBullet.maxVelocity.y = 160;
 			newBullet.acceleration.y -= newBullet.drag.y;
@@ -190,11 +204,11 @@ package
 		private function setupPlayer():void
 		{
 			player = new FlxSprite(17, 17);
-			player.loadGraphic(ImgFighter, true, true, 17);
+			player.loadGraphic(ImgFighter, true, true, 17,20);
 			
 			//bounding box tweaks
-			player.width = 16;
-			player.height = 17;
+			player.width = 17;
+			player.height = 20;
 			player.offset.x = 1;
 			player.offset.y = 1;
 			
@@ -206,9 +220,8 @@ package
 			player.maxVelocity.y = 200;
 			
 			//animations
-			player.addAnimation("idle", [0]);
-			player.addAnimation("run", [1, 2, 3, 0], 12);
-			player.addAnimation("jump", [4]);
+			player.addAnimation("flying", [0, 1], 40);
+			player.play("flying");
 			
 			add(player);
 		}
