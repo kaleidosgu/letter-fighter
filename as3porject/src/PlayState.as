@@ -7,6 +7,7 @@ package
 	import flash.net.FileReference;
 	import org.flixel.*;
 	import flash.filesystem.File;
+	import state.GameOverState;
 
 	public class PlayState extends FlxState
 	{	
@@ -251,7 +252,8 @@ package
 			if ( FlxG.keys.justReleased("SPACE" ) )
 			{
 				FlxG.play( SoundEffect );	
-				generateBullet( player.x + player.width / 2 - 1, player.y );
+				//generateBullet( player.x + player.width / 2 - 1, player.y );
+				FlxG.switchState(new GameOverState());
 			}
 		}
 		

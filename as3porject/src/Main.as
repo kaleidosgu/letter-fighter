@@ -8,7 +8,6 @@ package
 	{
 		public function Main()
 		{
-			//test
 			super(320, 240, PlayState, 1, 20, 20);
 		}
 	}
