@@ -280,5 +280,12 @@ package
 				player.y = 0;
 			}
 		}
+		
+		override public function destroy():void
+		{
+			super.destroy();
+			//todo
+			//new 出来的内部new出来的都需要 = null
+		}
 	}
 }

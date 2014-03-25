@@ -17,6 +17,7 @@
   <classpaths>
     <class path="src" />
     <class path="lib\flixel" />
+    <class path="lib\kaleiAs3Util" />
   </classpaths>
   <!-- Build options -->
   <build>
