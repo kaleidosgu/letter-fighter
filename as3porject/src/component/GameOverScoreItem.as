@@ -18,8 +18,10 @@ package component
 		private var _diff:Number = 5;
 		public function GameOverScoreItem() 
 		{
-			var width:Number = FlxG.width / 2 - _diff * 2;
-			var posX:Number = FlxG.width / 2 - width / 2;
+			/*var width:Number = FlxG.width / 2 - _diff * 2;
+			var posX:Number = FlxG.width / 2 - width / 2;*/
+			var posX:Number = 15;
+			var width:Number = FlxG.width - posX * 2;
 			_nameTextField = new FlxText( posX, 0, width, "" );
 			_nameTextField.alignment = KaleiTextFormatConst.ALIGH_LEFT;
 			_nameTextField.size = 14;
