@@ -137,8 +137,10 @@ package
 			newBullet.offset.y = 1;
 			
 			//basic player physics
-			newBullet.drag.x = 640;
-			newBullet.drag.y = 640;
+			//newBullet.drag.x = 640;
+			//newBullet.drag.y = 600;
+			newBullet.velocity.y = -500;
+			newBullet.velocity.x = -1000;
 			newBullet.maxVelocity.x = 80;
 			newBullet.maxVelocity.y = 160;
 			newBullet.acceleration.y -= newBullet.drag.y;
@@ -252,8 +254,8 @@ package
 			if ( FlxG.keys.justReleased("SPACE" ) )
 			{
 				FlxG.play( SoundEffect );	
-				//generateBullet( player.x + player.width / 2 - 1, player.y );
-				FlxG.switchState(new GameOverState());
+				generateBullet( player.x + player.width / 2 - 1, player.y );
+				//FlxG.switchState(new GameOverState());
 			}
 		}
 		

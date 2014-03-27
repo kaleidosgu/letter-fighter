@@ -2,7 +2,8 @@ package
 {
 	import org.flixel.*;
 	//import state.GameOverState;
-	import state.GameStartState;
+	//import state.GameStartState;
+	import state.GameTestState;
 	[SWF(width="320", height="240", backgroundColor="#000000")]
 	[Frame(factoryClass="Preloader")]
 
@@ -10,7 +11,8 @@ package
 	{
 		public function Main()
 		{
-			super(320, 240, GameStartState, 1, 20, 20);
+			super(320, 240, GameTestState, 1, 20, 20);
+			//super(320, 240, PlayState, 1, 20, 20);
 		}
 	}
 }
