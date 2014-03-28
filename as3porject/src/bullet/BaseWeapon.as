@@ -8,8 +8,11 @@ package bullet
 	 */
 	public class BaseWeapon 
 	{
-		
+		public static var WEAPON_TYPE_I:int = 1;
+		public static var WEAPON_TYPE_Y:int = 2;
+		public static var WEAPON_TYPE_X:int = 3;
 		private var _addState:FlxState;
+		private var _weaponType:int = 0;
 		public function BaseWeapon() 
 		{
 			
@@ -26,20 +29,33 @@ package bullet
 		
 		public function fire( graphic:Class, initX:Number, initY:Number ):void
 		{
-			//bullet Y
-			/*generateBullet( graphic, initX, initY, -500, -500 );
-			generateBullet( graphic, initX, initY, 500, -500 );
-			generateBullet( graphic, initX, initY, 0, 500 );*/
-			
-			//bullet X
-			/*generateBullet( graphic, initX, initY, -500, -500 );
-			generateBullet( graphic, initX, initY, -500, 500 );
-			generateBullet( graphic, initX, initY, 500, -500 );
-			generateBullet( graphic, initX, initY, 500, 500 );*/
-			
-			//bullet I
-			generateBullet( graphic, initX, initY, 0, -500 );
-			
+			switch ( _weaponType )
+			{
+				case WEAPON_TYPE_I:
+				{
+					generateBullet( graphic, initX, initY, 0, -500 );
+					break;
+				}
+				case WEAPON_TYPE_X:
+				{
+					generateBullet( graphic, initX, initY, -500, -500 );
+					generateBullet( graphic, initX, initY, -500, 500 );
+					generateBullet( graphic, initX, initY, 500, -500 );
+					generateBullet( graphic, initX, initY, 500, 500 );
+					break;
+				}
+				case WEAPON_TYPE_Y:
+				{
+					generateBullet( graphic, initX, initY, -500, -500 );
+					generateBullet( graphic, initX, initY, 500, -500 );
+					generateBullet( graphic, initX, initY, 0, 500 );
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
 		}
 		
 		public function get addState():FlxState 
@@ -50,6 +66,16 @@ package bullet
 		public function set addState(value:FlxState):void 
 		{
 			_addState = value;
+		}
+		
+		public function get weaponType():int 
+		{
+			return _weaponType;
+		}
+		
+		public function set weaponType(value:int):void 
+		{
+			_weaponType = value;
 		}
 		
 	}

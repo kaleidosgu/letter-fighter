@@ -2,6 +2,8 @@ package state
 {
 	import bullet.BaseBullet;
 	import bullet.BaseWeapon;
+	import bullet.WeaponInstance;
+	import bullet.WeaponPackage;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxState;
 	import org.flixel.FlxG;
@@ -18,14 +20,16 @@ package state
 	{
 		[Embed(source = "../../res/image/bullet3.png")] private static var bulletPicture:Class;
 		[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
-		
+		[Embed(source = "../../res/image/enemy/fontall.png")] private static var fontallPicture:Class;
 		private var player:FlxSprite;
 		private var enemy:FlxSprite;
 		private var playerGroup:FlxGroup;
 		private var enemyGroup:FlxGroup;
+		private var weaponGroup:FlxGroup;
 		private var _bullet:BaseBullet;
 		
 		private var _weapon:BaseWeapon;
+		private var weaponPackage:WeaponPackage = null;
 		public function GameTestState() 
 		{
 			
@@ -37,12 +41,13 @@ package state
 			
 			if ( FlxG.keys.justReleased("SPACE" ) )
 			{
-				_weapon.fire( bulletPicture, 100, 100 );
+				_weapon.fire( bulletPicture, 105, 105 );
 				//generateBullet( FlxG.width / 2 , FlxG.height / 2, true );
 				//generateBullet( FlxG.width / 2 , FlxG.height / 2, false );
 			}
 			updatePlayer();
-			FlxG.collide( enemyGroup, playerGroup , collide );
+			//FlxG.collide( enemyGroup, playerGroup , collide );
+			weaponPackage.update();
 		}
 		
 		override public function create():void
@@ -50,6 +55,7 @@ package state
 			super.create();
 			_weapon = new BaseWeapon();
 			_weapon.addState = this;
+			_weapon.weaponType = BaseWeapon.WEAPON_TYPE_X;
 			_bullet = new BaseBullet();
 			
 			player = new FlxSprite(17, 17);
@@ -99,6 +105,39 @@ package state
 			add(enemy);
 			enemyGroup = new FlxGroup();
 			enemyGroup.add( enemy );
+			
+			weaponGroup = new FlxGroup();
+			
+			weaponPackage = new WeaponPackage(this, weaponGroup,playerGroup,fontallPicture,collideTrigged );
+				
+		}
+		
+		private function collideTrigged( flxobj1:FlxObject, flxobj2:FlxObject ):void
+		{
+			if ( flxobj1 is WeaponInstance )
+			{
+				var weaponIns1:WeaponInstance = flxobj1 as WeaponInstance;
+				if ( weaponIns1.weaponType == BaseWeapon.WEAPON_TYPE_I )
+				{
+					player.color = 0xff0000;
+				}
+				else if ( weaponIns1.weaponType == BaseWeapon.WEAPON_TYPE_X )
+				{
+					player.color = 0x00ff00;
+				}
+				else if ( weaponIns1.weaponType == BaseWeapon.WEAPON_TYPE_Y )
+				{
+					player.color = 0x0000ff;
+				}
+				remove( flxobj1 );
+				weaponIns1 = null;
+			}
+			else if ( flxobj2 is WeaponInstance )
+			{
+				var weaponIns2:WeaponInstance = flxobj2 as WeaponInstance;
+				remove( flxobj2 );
+				weaponIns2 = null;
+			}
 		}
 		private function collide( obj1:FlxObject, obj2:FlxObject ):void
 		{
