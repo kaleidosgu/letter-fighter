@@ -4,14 +4,19 @@ package state
 	import bullet.BaseWeapon;
 	import bullet.WeaponInstance;
 	import bullet.WeaponPackage;
+	import dispatcher.GlobalDispatcher;
+	import letter_event.EventEnemyExploded;
+	import letter_event.EventEnemyScoreOver;
 	import flight.PlayerFlight;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxState;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxText;
 	import org.flixel.FlxTilemap;
 	import org.flixel.FlxU;
+	import sceneobj.ScoreSprite;
 	
 	/**
 	 * ...
@@ -30,6 +35,7 @@ package state
 		private var weaponPackage:WeaponPackage = null;
 		private var MAX_TILE_BLOCK_NUM:int = 15;
 		private var MIN_TILE_BLOCK_NUM:int = 10;
+				
 		public function GameTestState() 
 		{
 		}
@@ -39,6 +45,16 @@ package state
 			super.update();
 			player.updatePlayer();
 			weaponPackage.update();
+			
+			if ( FlxG.keys.justReleased("T" ) )
+			{
+				var eventExploded:EventEnemyExploded = new EventEnemyExploded( EventEnemyExploded.EVENT_ENEMY_EXPLODED );
+				
+				eventExploded.enemyPosX = Math.random() * FlxG.width;
+				eventExploded.enemyPosY = Math.random() * FlxG.height;
+				eventExploded.enemyScore = Math.random() * 100;
+				GlobalDispatcher.getIns().dispatchEvent( eventExploded ); 
+			}
 		}
 		
 		override public function create():void
@@ -77,8 +93,21 @@ package state
 			
 			weaponGroup = new FlxGroup();
 			
-			weaponPackage = new WeaponPackage(this, weaponGroup,playerGroup,fontallPicture,collideTrigged );
+			weaponPackage = new WeaponPackage(this, weaponGroup, playerGroup, fontallPicture, collideTrigged );
+						
+			GlobalDispatcher.getIns().addEventListener( EventEnemyExploded.EVENT_ENEMY_EXPLODED, enemyExploded );
+			GlobalDispatcher.getIns().addEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
 				
+		}
+		
+		private function enemyExploded( event:EventEnemyExploded ):void
+		{
+			var enemyScore:ScoreSprite = new ScoreSprite(this, event.enemyPosX, event.enemyPosY, 50, event.enemyScore );
+		}
+		private function enemyScoreOver( event:EventEnemyScoreOver ):void
+		{
+			this.remove( event.scoreText );
+			event.scoreText = null; 
 		}
 		
 		private function collideTrigged( flxobj1:FlxObject, flxobj2:FlxObject ):void
