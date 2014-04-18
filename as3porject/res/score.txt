@@ -1,10 +1,3 @@
+kaleidos9,30
 kaleidos,31
 kaleidos1,32
-kaleidos2,33
-kaleidos3,34
-kaleidos4,35
-kaleidos5,36
-kaleidos6,37
-kaleidos7,38
-kaleidos8,39
-kaleidos9,30

@@ -28,8 +28,8 @@ package state
 			
 			var dataRead:KaleResourceDataRead = new KaleResourceDataRead( filePathString );
 			var dataString:Object = dataRead.getData();
-			var mapString:String = dataString as String;
-			initScore( mapString );
+			var scoreString:String = dataString as String;
+			initScore( scoreString );
 		}
 		
 		private function addScoreForPlayer( indexRank:int, name:String, score:Number ):void

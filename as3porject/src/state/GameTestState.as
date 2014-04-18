@@ -9,10 +9,13 @@ package state
 	import flight.BaseEnemyFlight;
 	import flight.BaseFlight;
 	import flight.NormalEnemyFlight;
+	import kale.fileUtil.KaleResourceDataRead;
+	import kale.fileUtil.KaleTxtResourcePath;
 	import letter_event.EventEnemyExploded;
 	import letter_event.EventEnemyScoreOver;
 	import flight.PlayerFlight;
 	import manager.ScoreManager;
+	import manager.UserDataManager;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxState;
 	import org.flixel.FlxG;
@@ -105,6 +108,20 @@ package state
 			
 			_scoreBill = new ScoreBillBoard( 0, 0, 100, "" );
 			add( _scoreBill );
+			
+			var userdatamgr:UserDataManager = new UserDataManager();
+			
+			
+			var kaleResPath:KaleTxtResourcePath = new KaleTxtResourcePath("score");
+			kaleResPath.setSubPathString("");
+			var filePathString:String = kaleResPath.resourcePath;
+			
+			var dataRead:KaleResourceDataRead = new KaleResourceDataRead( filePathString );
+			var dataString:Object = dataRead.getData();
+			var scoreString:String = dataString as String;
+			
+			UserDataManager.getIns().generateUserDataByString( scoreString );
+			UserDataManager.getIns().scoreProcess( 300000, "fafafa" );
 		}
 		
 		private function enemyCollideBullet( flxobj1:FlxObject, flxobj2:FlxObject ):void
