@@ -50,7 +50,7 @@ package flight
 			_scoreManager.addScore( _enemyScore );
 			GlobalDispatcher.getIns().dispatchEvent( eventExploded ); 
 			
-			//_state.remove( this );
+			_state.remove( this );
 		}
 		
 		public function get enemyScore():int 

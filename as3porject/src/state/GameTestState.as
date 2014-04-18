@@ -21,6 +21,7 @@ package state
 	import org.flixel.FlxText;
 	import org.flixel.FlxTilemap;
 	import org.flixel.FlxU;
+	import sceneobj.ScoreBillBoard;
 	import sceneobj.ScoreSprite;
 	
 	/**
@@ -43,6 +44,8 @@ package state
 		private var mgrScore:ScoreManager = new ScoreManager();
 		private var enemyArray:Array = new Array();
 		private var _playerCheck:PlayerBulletCheck = null;
+		
+		private var _scoreBill:ScoreBillBoard = null;
 				
 		public function GameTestState() 
 		{
@@ -75,6 +78,7 @@ package state
 		override public function create():void
 		{
 			super.create();
+			
 			_bulletGroup = new FlxGroup();
 			
 			player = new PlayerFlight( this, _bulletGroup, 17, 17 );
@@ -98,6 +102,9 @@ package state
 			GlobalDispatcher.getIns().addEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
 				
 			_playerCheck = new PlayerBulletCheck( _bulletGroup, enemyGroup, enemyCollideBullet);
+			
+			_scoreBill = new ScoreBillBoard( 0, 0, 100, "" );
+			add( _scoreBill );
 		}
 		
 		private function enemyCollideBullet( flxobj1:FlxObject, flxobj2:FlxObject ):void

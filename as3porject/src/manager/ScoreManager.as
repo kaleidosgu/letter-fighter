@@ -1,5 +1,7 @@
 package manager 
 {
+	import dispatcher.GlobalDispatcher;
+	import letter_event.PlayerGetScoreEvent;
 	/**
 	 * ...
 	 * @author kaleidos
@@ -15,6 +17,10 @@ package manager
 		public function addScore( scoreValue:int ):void
 		{
 			_totalScore += scoreValue;
+			
+			var eventGetScore:PlayerGetScoreEvent = new PlayerGetScoreEvent( PlayerGetScoreEvent.PLAYER_GET_SCORE );
+			eventGetScore.scoreValue = _totalScore;
+			GlobalDispatcher.getIns().dispatchEvent( eventGetScore ); 
 		}
 		
 	}
