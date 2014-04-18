@@ -1,5 +1,6 @@
 package manager 
 {
+	import kale.fileUtil.KaleResourceDataRead;
 	import kale.fileUtil.KaleResourceDataWrite;
 	import kale.fileUtil.KaleTxtResourcePath;
 	/**
@@ -9,7 +10,7 @@ package manager
 	public class UserDataManager 
 	{
 		private static var _userData:UserDataManager = null;
-		private var _scoreLimitCounts:int = 3;
+		private var _scoreLimitCounts:int = 10;
 		private var _scoreArray:Array = new Array();
 		public function UserDataManager() 
 		{
@@ -24,7 +25,18 @@ package manager
 			return _userData;
 		}
 		
-		public function generateUserDataByString( scoreString:String ):void
+		public function generateUserData():void
+		{
+			var kaleResPath:KaleTxtResourcePath = new KaleTxtResourcePath("score");
+			kaleResPath.setSubPathString("");
+			var filePathString:String = kaleResPath.resourcePath;
+			
+			var dataRead:KaleResourceDataRead = new KaleResourceDataRead( filePathString );
+			var dataString:Object = dataRead.getData();
+			var scoreString:String = dataString as String;
+			generateUserDataByString( scoreString );
+		}
+		private function generateUserDataByString( scoreString:String ):void
 		{
 			var rowsArray:Array = scoreString.split("\n");
 			for each( var rowData:String in rowsArray )
@@ -49,11 +61,19 @@ package manager
 			var userdata:UserData = new UserData( name, newScore );
 			
 			var processArray:Array = new Array( );	
+			var insertOK:Boolean = true;
 			for each( var userIt:UserData in _scoreArray )
 			{
+				if ( userIt.userScore == newScore  )
+				{
+					insertOK = false;
+				}
 				processArray.push ( userIt.clone() );
 			}
-			processArray.push ( userdata );
+			if ( insertOK )
+			{
+				processArray.push ( userdata );	
+			}
 			processArray.sort( sortFunction );
 			writeScoreIntoFile( processArray );
 		}
@@ -62,11 +82,11 @@ package manager
 		{
 			if ( userLeft.userScore < userRight.userScore )
 			{
-				return -1;
+				return 1;
 			}
 			else if ( userLeft.userScore >= userRight.userScore )
 			{
-				return 1;
+				return -1;
 			}
 			return 1;
 		}

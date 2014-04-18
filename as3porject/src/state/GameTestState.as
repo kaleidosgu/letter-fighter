@@ -109,18 +109,8 @@ package state
 			_scoreBill = new ScoreBillBoard( 0, 0, 100, "" );
 			add( _scoreBill );
 			
-			var userdatamgr:UserDataManager = new UserDataManager();
 			
-			
-			var kaleResPath:KaleTxtResourcePath = new KaleTxtResourcePath("score");
-			kaleResPath.setSubPathString("");
-			var filePathString:String = kaleResPath.resourcePath;
-			
-			var dataRead:KaleResourceDataRead = new KaleResourceDataRead( filePathString );
-			var dataString:Object = dataRead.getData();
-			var scoreString:String = dataString as String;
-			
-			UserDataManager.getIns().generateUserDataByString( scoreString );
+			UserDataManager.getIns().generateUserData( );
 			UserDataManager.getIns().scoreProcess( 300000, "fafafa" );
 		}
 		
