@@ -1,6 +1,7 @@
 package flight 
 {
 	import bullet.BaseWeapon;
+	import org.flixel.FlxGroup;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxState;
@@ -15,7 +16,7 @@ package flight
 		
 		private var _weapon:BaseWeapon = null;
 		private var _state:FlxState = null;
-		public function PlayerFlight( state:FlxState, X:Number = 0, Y:Number = 0, SimpleGraphic:Class = null) 
+		public function PlayerFlight( state:FlxState, bulletGroup:FlxGroup, X:Number = 0, Y:Number = 0, SimpleGraphic:Class = null) 
 		{
 			super(X, Y, SimpleGraphic);
 			
@@ -39,6 +40,7 @@ package flight
 			_weapon = new BaseWeapon();
 			_weapon.addState = _state;
 			_weapon.weaponType = BaseWeapon.WEAPON_TYPE_I;
+			_weapon.bulletGroup = bulletGroup;
 		}
 		public function exploded():void
 		{
@@ -62,7 +64,7 @@ package flight
 			
 		}
 		
-		public function updatePlayer():void
+		public function updateFlight():void
 		{
 			acceleration.x = 0;
 			acceleration.y = 0;

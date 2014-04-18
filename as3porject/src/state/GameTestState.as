@@ -2,12 +2,17 @@ package state
 {
 	import bullet.BaseBullet;
 	import bullet.BaseWeapon;
+	import bullet.PlayerBulletCheck;
 	import bullet.WeaponInstance;
 	import bullet.WeaponPackage;
 	import dispatcher.GlobalDispatcher;
+	import flight.BaseEnemyFlight;
+	import flight.BaseFlight;
+	import flight.NormalEnemyFlight;
 	import letter_event.EventEnemyExploded;
 	import letter_event.EventEnemyScoreOver;
 	import flight.PlayerFlight;
+	import manager.ScoreManager;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxState;
 	import org.flixel.FlxG;
@@ -31,10 +36,13 @@ package state
 		private var playerGroup:FlxGroup;
 		private var enemyGroup:FlxGroup;
 		private var weaponGroup:FlxGroup;
-		private var _bullet:BaseBullet;	
+		private var _bulletGroup:FlxGroup;	
 		private var weaponPackage:WeaponPackage = null;
 		private var MAX_TILE_BLOCK_NUM:int = 15;
 		private var MIN_TILE_BLOCK_NUM:int = 10;
+		private var mgrScore:ScoreManager = new ScoreManager();
+		private var enemyArray:Array = new Array();
+		private var _playerCheck:PlayerBulletCheck = null;
 				
 		public function GameTestState() 
 		{
@@ -43,7 +51,7 @@ package state
 		override public function update():void
 		{
 			super.update();
-			player.updatePlayer();
+			player.updateFlight();
 			weaponPackage.update();
 			
 			if ( FlxG.keys.justReleased("T" ) )
@@ -55,49 +63,51 @@ package state
 				eventExploded.enemyScore = Math.random() * 100;
 				GlobalDispatcher.getIns().dispatchEvent( eventExploded ); 
 			}
+			
+			for each( var enemyFlight:BaseFlight in enemyArray )
+			{
+				enemyFlight.updateFlight();
+			}
+			
+			_playerCheck.update();
 		}
 		
 		override public function create():void
 		{
 			super.create();
-			_bullet = new BaseBullet();
+			_bulletGroup = new FlxGroup();
 			
-			player = new PlayerFlight( this, 17, 17 );
+			player = new PlayerFlight( this, _bulletGroup, 17, 17 );
 			add( player );
 			
 			
 			playerGroup = new FlxGroup();
 			playerGroup.add( player );
 			
-			enemy = new FlxSprite(100, 100);
-			enemy.loadGraphic(ImgFighter, true, true, 17,20);
-			
-			//bounding box tweaks
-			enemy.width = 17;
-			enemy.height = 20;
-			enemy.offset.x = 1;
-			enemy.offset.y = 1;
-			
-			enemy.drag.x = 640;
-			enemy.drag.y = 640;
-			
-			enemy.maxVelocity.x = 200;
-			enemy.maxVelocity.y = 200;
-			
-			//animations
-			enemy.addAnimation("flying", [0, 1], 40);
-			enemy.play("flying");
-			add(enemy);
+			enemy = new NormalEnemyFlight(mgrScore, this,30, 100);
 			enemyGroup = new FlxGroup();
 			enemyGroup.add( enemy );
 			
+			enemyArray.push ( enemy );
+			
 			weaponGroup = new FlxGroup();
 			
-			weaponPackage = new WeaponPackage(this, weaponGroup, playerGroup, fontallPicture, collideTrigged );
+			weaponPackage = new WeaponPackage(this, weaponGroup, playerGroup, fontallPicture, getWeaponTrig );
 						
 			GlobalDispatcher.getIns().addEventListener( EventEnemyExploded.EVENT_ENEMY_EXPLODED, enemyExploded );
 			GlobalDispatcher.getIns().addEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
 				
+			_playerCheck = new PlayerBulletCheck( _bulletGroup, enemyGroup, enemyCollideBullet);
+		}
+		
+		private function enemyCollideBullet( flxobj1:FlxObject, flxobj2:FlxObject ):void
+		{
+			if ( flxobj2 is BaseFlight )
+			{
+				var baseFlight:BaseFlight = flxobj2 as BaseFlight;
+				baseFlight.exploded();
+			}
+			this.remove( flxobj1 );
 		}
 		
 		private function enemyExploded( event:EventEnemyExploded ):void
@@ -110,7 +120,7 @@ package state
 			event.scoreText = null; 
 		}
 		
-		private function collideTrigged( flxobj1:FlxObject, flxobj2:FlxObject ):void
+		private function getWeaponTrig( flxobj1:FlxObject, flxobj2:FlxObject ):void
 		{
 			if ( flxobj1 is WeaponInstance )
 			{

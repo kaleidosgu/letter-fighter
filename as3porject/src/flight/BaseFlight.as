@@ -8,6 +8,7 @@ package flight
 	public interface BaseFlight 
 	{
 		function exploded():void;
+		function updateFlight():void;
 	}
 	
 }

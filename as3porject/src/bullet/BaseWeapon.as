@@ -1,5 +1,6 @@
 package bullet 
 {
+	import org.flixel.FlxGroup;
 	import org.flixel.FlxState;
 	import org.flixel.FlxSprite;
 	/**
@@ -13,6 +14,7 @@ package bullet
 		public static var WEAPON_TYPE_X:int = 3;
 		private var _addState:FlxState;
 		private var _weaponType:int = 0;
+		private var _bulletGroup:FlxGroup = null;
 		public function BaseWeapon() 
 		{
 			
@@ -25,6 +27,7 @@ package bullet
 			_bullet.velocityY = vy;
 			var _bulletSprite:FlxSprite = _bullet.generateBullet( graphic, initX, initY );
 			_addState.add( _bulletSprite );
+			_bulletGroup.add ( _bulletSprite );
 		}
 		
 		public function fire( graphic:Class, initX:Number, initY:Number ):void
@@ -76,6 +79,16 @@ package bullet
 		public function set weaponType(value:int):void 
 		{
 			_weaponType = value;
+		}
+		
+		public function get bulletGroup():FlxGroup 
+		{
+			return _bulletGroup;
+		}
+		
+		public function set bulletGroup(value:FlxGroup):void 
+		{
+			_bulletGroup = value;
 		}
 		
 	}
