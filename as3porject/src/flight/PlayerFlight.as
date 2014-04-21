@@ -33,7 +33,7 @@ package flight
 			maxVelocity.x = 200;
 			maxVelocity.y = 200;
 			
-			addAnimation("flying", [0, 1], 40);
+			addAnimation("flying", [0, 1], 10);
 			play("flying");
 			_state = state;
 			_state.add( this );
