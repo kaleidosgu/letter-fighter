@@ -16,15 +16,21 @@ package component
 	{
 		
 		private var scoreText:FlxText;
+		private var notifyText:FlxText;
 		private var _lastCharCode:uint = 0;
 		private var _currentScore:int = 30;
 		public function ScoreInputItem( stateFlx:FlxState, currentScore:int ) 
 		{
-			scoreText = new FlxText( 0, 0, FlxG.width, "" );
+			scoreText = new FlxText( 0, 100, FlxG.width, "" );
 			scoreText.alignment = KaleiTextFormatConst.ALIGH_CENTER;
 			scoreText.size = 14;
 			
+			notifyText = new FlxText( 0, 80, FlxG.width, "Enter your name..." );
+			notifyText.alignment = KaleiTextFormatConst.ALIGH_CENTER;
+			notifyText.size = 14;
+			
 			stateFlx.add( scoreText );
+			stateFlx.add( notifyText );
 			
 			FlxG.stage.addEventListener( KeyboardEvent.KEY_DOWN, keyBoardDown );
 			FlxG.stage.addEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
@@ -49,11 +55,12 @@ package component
 				var charString:String = String.fromCharCode(_lastCharCode);
 				scoreText.text = scoreText.text + charString;
 				_lastCharCode = 0;
-				FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
 			}
 			
 			if ( event.keyCode == Keyboard.ENTER )
 			{
+				FlxG.stage.removeEventListener( KeyboardEvent.KEY_DOWN, keyBoardDown );
+				FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
 				enterName( scoreText.text );
 			}
 		}
