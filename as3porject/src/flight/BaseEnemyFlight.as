@@ -44,6 +44,13 @@ package flight
 			this.play("flying");
 			_state.add( this );
 		}
+		public function gameStop():void
+		{
+			this.velocity.x = 0;
+			this.velocity.y = 0;
+			this.acceleration.x = 0;
+			this.acceleration.y = 0;
+		}
 		public function exploded():void
 		{
 			var eventExploded:EventEnemyExploded= new EventEnemyExploded( EventEnemyExploded.EVENT_ENEMY_EXPLODED );

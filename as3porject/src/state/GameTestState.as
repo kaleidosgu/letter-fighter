@@ -3,7 +3,9 @@ package state
 	import bullet.BaseBullet;
 	import bullet.BaseWeapon;
 	import bullet.WeaponInstance;
+	import component.ScoreInputItem;
 	import dispatcher.GlobalDispatcher;
+	import flash.events.KeyboardEvent;
 	import flight.BaseEnemyFlight;
 	import flight.BaseFlight;
 	import flight.EnemyFlightGenerator;
@@ -11,6 +13,7 @@ package state
 	import flight.NormalEnemyFlight;
 	import kale.fileUtil.KaleResourceDataRead;
 	import kale.fileUtil.KaleTxtResourcePath;
+	import kale.KaleiTextFormatConst;
 	import letter_event.EventEnemyExploded;
 	import letter_event.EventEnemyScoreOver;
 	import flight.PlayerFlight;
@@ -39,6 +42,13 @@ package state
 		
 		private var enemyGenerator:EnemyFlightGenerator = null;
 		private var _enemyGroup:FlxGroup = new FlxGroup();
+		private var _timeTick:Number = 5;
+		private var _nameTextField:FlxText;
+		
+		private var _lastCharCode:uint = 0;
+		
+		private var scoreItem:ScoreInputItem = null;
+		
 		public function GameTestState() 
 		{
 		}
@@ -46,34 +56,49 @@ package state
 		override public function update():void
 		{
 			super.update();
-			player.updateFlight();
-			for each( var enemyFlight:BaseFlight in enemyArray )
+			_timeTick -= FlxG.elapsed;
+			//if ( _timeTick > 0 )
+			if( true )
 			{
-				enemyFlight.updateFlight();
+				player.updateFlight();
+				for each( var enemyFlight:BaseFlight in enemyArray )
+				{
+					enemyFlight.updateFlight();
+				}
+				
+				
+				if ( FlxG.keys.justReleased("T" ) )
+				{
+					var enemyAdded:EnemyWeakFollowFlight = new EnemyWeakFollowFlight(mgrScore, this, 30, 100);			
+					enemyAdded.playerFlight = player;
+					add( enemyAdded );
+					enemyArray.push ( enemyAdded );
+				}
+				
+				enemyGenerator.update();
+			}
+			else
+			{
+				for each( var enemyStop:BaseFlight in enemyArray )
+				{
+					enemyStop.gameStop();
+				}
 			}
 			
-			
-			if ( FlxG.keys.justReleased("T" ) )
-			{
-				var enemyAdded:EnemyWeakFollowFlight = new EnemyWeakFollowFlight(mgrScore, this, 30, 100);			
-				enemyAdded.playerFlight = player;
-				add( enemyAdded );
-				enemyArray.push ( enemyAdded );
-			}
-			
-			enemyGenerator.update();
 		}
 		
 		override public function create():void
 		{
 			super.create();
-			
+						
 			player = new PlayerFlight( this, null, 17, 17 );
 			add( player );
 			
 			enemyGenerator = new EnemyFlightGenerator( enemyArray, _enemyGroup, mgrScore, player, this );
+			
+			scoreItem = new ScoreInputItem( this, 100 );
+			
 		}
-		
 		override public function destroy():void
 		{
 			super.destroy();

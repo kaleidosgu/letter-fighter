@@ -1,6 +1,7 @@
 package state 
 {
 	import component.GameOverScoreItem;
+	import flash.events.KeyboardEvent;
 	import kale.fileUtil.KaleResourceDataRead;
 	import kale.fileUtil.KaleTxtResourcePath;
 	import org.flixel.FlxState;
@@ -30,6 +31,13 @@ package state
 			var dataString:Object = dataRead.getData();
 			var scoreString:String = dataString as String;
 			initScore( scoreString );
+			
+			FlxG.stage.addEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
+		}
+		
+		private function keyBoardUP( event:KeyboardEvent ):void
+		{
+			FlxG.switchState( new GameStartState() );
 		}
 		
 		private function addScoreForPlayer( indexRank:int, name:String, score:Number ):void

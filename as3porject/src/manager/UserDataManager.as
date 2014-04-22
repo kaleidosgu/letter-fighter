@@ -64,10 +64,6 @@ package manager
 			var insertOK:Boolean = true;
 			for each( var userIt:UserData in _scoreArray )
 			{
-				if ( userIt.userScore == newScore  )
-				{
-					insertOK = false;
-				}
 				processArray.push ( userIt.clone() );
 			}
 			if ( insertOK )

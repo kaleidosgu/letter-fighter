@@ -42,15 +42,11 @@ package flight
 			if ( _currentEnemyTime <= 0 )
 			{
 				var enemyType:int = int(Math.random() * EnemyFlightType.EnemyMaxType ) + 1;
-				
-				trace( "" + enemyType );
 				var randomX:Number = 0;
 				var randomY:Number = 0;
 				
 				var randomXY:int = int(Math.random() * 2 ) + 1;
 				var twoSide:int = int(Math.random() * 2 ) + 1;
-				trace("randomXY = " + randomXY);
-				trace("twoSide = " + twoSide);
 				if ( randomXY == 1 )
 				{
 					randomX = _arrayX[twoSide];

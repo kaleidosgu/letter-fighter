@@ -1,5 +1,6 @@
 package component 
 {
+	import flash.ui.Keyboard;
 	import org.flixel.FlxBasic;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxText;
@@ -18,8 +19,6 @@ package component
 		private var _diff:Number = 5;
 		public function GameOverScoreItem() 
 		{
-			/*var width:Number = FlxG.width / 2 - _diff * 2;
-			var posX:Number = FlxG.width / 2 - width / 2;*/
 			var posX:Number = 15;
 			var width:Number = FlxG.width - posX * 2;
 			_nameTextField = new FlxText( posX, 0, width, "" );
@@ -40,6 +39,11 @@ package component
 		
 		public function setNameText( listRank:int, name:String ):void
 		{
+			var enterCharCode:String = String.fromCharCode( Keyboard.ENTER );
+			if ( name == enterCharCode )
+			{
+				name = "UnnamedPlayer";
+			}
 			_nameTextField.text = listRank.toString() + "." + name;
 		}
 		

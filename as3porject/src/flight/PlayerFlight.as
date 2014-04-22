@@ -42,6 +42,10 @@ package flight
 			_weapon.weaponType = BaseWeapon.WEAPON_TYPE_I;
 			_weapon.bulletGroup = bulletGroup;
 		}
+		public function gameStop():void
+		{
+			
+		}
 		public function exploded():void
 		{
 		}

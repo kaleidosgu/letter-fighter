@@ -9,6 +9,7 @@ package flight
 	{
 		function exploded():void;
 		function updateFlight():void;
+		function gameStop():void;
 	}
 	
 }
