@@ -6,6 +6,7 @@ package state
 	import dispatcher.GlobalDispatcher;
 	import flight.BaseEnemyFlight;
 	import flight.BaseFlight;
+	import flight.EnemyWeakFollowFlight;
 	import flight.NormalEnemyFlight;
 	import kale.fileUtil.KaleResourceDataRead;
 	import kale.fileUtil.KaleTxtResourcePath;
@@ -53,7 +54,7 @@ package state
 			
 			if ( FlxG.keys.justReleased("T" ) )
 			{
-				var enemyAdded:NormalEnemyFlight = new NormalEnemyFlight(mgrScore, this, 30, 100);			
+				var enemyAdded:EnemyWeakFollowFlight = new EnemyWeakFollowFlight(mgrScore, this, 30, 100);			
 				enemyAdded.playerFlight = player;
 				add( enemyAdded );
 				enemyArray.push ( enemyAdded );

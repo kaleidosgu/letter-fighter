@@ -10,8 +10,6 @@ package flight
 	 */
 	public class NormalEnemyFlight extends BaseEnemyFlight 
 	{
-		private var _velocityX:Number = 40;
-		private var _velocityY:Number = 40;
 		private var _update:Boolean = false;
 		public function NormalEnemyFlight(mgr:ScoreManager, state:FlxState,X:Number=0,Y:Number=0,SimpleGraphic:Class=null) 
 		{

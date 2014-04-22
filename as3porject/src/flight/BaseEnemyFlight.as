@@ -17,6 +17,8 @@ package flight
 		protected var _state:FlxState = null;
 		private var _enemyScore:int = 0;
 		private var _playerFlight:PlayerFlight = null;
+		protected var _velocityX:Number = 40;
+		protected var _velocityY:Number = 40;
 		public function BaseEnemyFlight( mgr:ScoreManager, state:FlxState,X:Number=0,Y:Number=0,SimpleGraphic:Class=null ) 
 		{
 			super(X, Y, SimpleGraphic );
