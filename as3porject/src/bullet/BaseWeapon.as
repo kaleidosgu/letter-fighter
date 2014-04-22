@@ -27,7 +27,10 @@ package bullet
 			_bullet.velocityY = vy;
 			var _bulletSprite:FlxSprite = _bullet.generateBullet( graphic, initX, initY );
 			_addState.add( _bulletSprite );
-			_bulletGroup.add ( _bulletSprite );
+			if ( _bulletGroup )
+			{
+				_bulletGroup.add ( _bulletSprite );	
+			}
 		}
 		
 		public function fire( graphic:Class, initX:Number, initY:Number ):void

@@ -16,6 +16,7 @@ package flight
 		protected var _scoreManager:ScoreManager = null;
 		protected var _state:FlxState = null;
 		private var _enemyScore:int = 0;
+		private var _playerFlight:PlayerFlight = null;
 		public function BaseEnemyFlight( mgr:ScoreManager, state:FlxState,X:Number=0,Y:Number=0,SimpleGraphic:Class=null ) 
 		{
 			super(X, Y, SimpleGraphic );
@@ -33,8 +34,8 @@ package flight
 			this.drag.x = 640;
 			this.drag.y = 640;
 			
-			this.maxVelocity.x = 200;
-			this.maxVelocity.y = 200;
+			this.maxVelocity.x = 30;
+			this.maxVelocity.y = 30;
 			
 			//animations
 			this.addAnimation("flying", [0, 1], 40);
@@ -47,7 +48,10 @@ package flight
 			eventExploded.enemyPosX = this.x;
 			eventExploded.enemyPosY = this.y;
 			eventExploded.enemyScore = _enemyScore;			
-			_scoreManager.addScore( _enemyScore );
+			if ( _scoreManager )
+			{
+				_scoreManager.addScore( _enemyScore );	
+			}
 			GlobalDispatcher.getIns().dispatchEvent( eventExploded ); 
 			
 			_state.remove( this );
@@ -61,6 +65,16 @@ package flight
 		public function set enemyScore(value:int):void 
 		{
 			_enemyScore = value;
+		}
+		
+		public function get playerFlight():PlayerFlight 
+		{
+			return _playerFlight;
+		}
+		
+		public function set playerFlight(value:PlayerFlight):void 
+		{
+			_playerFlight = value;
 		}
 		public function updateFlight():void
 		{
