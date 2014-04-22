@@ -6,6 +6,7 @@ package state
 	import dispatcher.GlobalDispatcher;
 	import flight.BaseEnemyFlight;
 	import flight.BaseFlight;
+	import flight.EnemyFlightGenerator;
 	import flight.EnemyWeakFollowFlight;
 	import flight.NormalEnemyFlight;
 	import kale.fileUtil.KaleResourceDataRead;
@@ -30,14 +31,14 @@ package state
 	 */
 	public class GameTestState extends FlxState 
 	{
-		[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
-		[Embed(source = "../../res/image/enemy/fontall.png")] private static var fontallPicture:Class;
 		private var enemy:FlxSprite;
-		private var enemyGroup:FlxGroup;
 		private var mgrScore:ScoreManager = new ScoreManager();
 		private var enemyArray:Array = new Array();
 		
 		private var player:PlayerFlight;
+		
+		private var enemyGenerator:EnemyFlightGenerator = null;
+		private var _enemyGroup:FlxGroup = new FlxGroup();
 		public function GameTestState() 
 		{
 		}
@@ -59,6 +60,8 @@ package state
 				add( enemyAdded );
 				enemyArray.push ( enemyAdded );
 			}
+			
+			enemyGenerator.update();
 		}
 		
 		override public function create():void
@@ -67,6 +70,8 @@ package state
 			
 			player = new PlayerFlight( this, null, 17, 17 );
 			add( player );
+			
+			enemyGenerator = new EnemyFlightGenerator( enemyArray, _enemyGroup, mgrScore, player, this );
 		}
 		
 		override public function destroy():void
