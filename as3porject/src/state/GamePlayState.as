@@ -3,11 +3,13 @@ package state
 	import bullet.PlayerBulletCheck;
 	import bullet.WeaponInstance;
 	import bullet.WeaponPackage;
+	import component.ScoreInputItem;
 	import dispatcher.GlobalDispatcher;
 	import flight.BaseFlight;
 	import flight.EnemyFlightGenerator;
 	import flight.NormalEnemyFlight;
 	import flight.PlayerFlight;
+	import gameConst.GameStatusConst;
 	import kale.KaleiTextFormatConst;
 	import letter_event.EventEnemyExploded;
 	import letter_event.EventEnemyScoreOver;
@@ -47,6 +49,9 @@ package state
 		private var _speedBackGround:Number = 0;
 		
 		private var _enemyGenerator:EnemyFlightGenerator = null;
+		private var _gameStatus:uint = GameStatusConst.GAME_STATUS_RUN;
+		
+		private var scoreItem:ScoreInputItem = null;
 		public function GamePlayState() 
 		{
 			
@@ -94,24 +99,44 @@ package state
 			_backgroundSprite.maxVelocity.y = 100;
 			add( _backgroundSprite );
 		}
-		
+		private function enemyCollidePlayer( flxobj1:FlxObject, flxobj2:FlxObject ):void
+		{
+			if ( flxobj1 is PlayerFlight )
+			{
+				_gameStatus = GameStatusConst.GAME_STATUS_OVER;
+			}
+		}
 		override public function update():void
 		{
 			super.update();
-			weaponPackage.update();
-			player.updateFlight();
-			_playerCheck.update();
-			for each( var enemyFlight:BaseFlight in enemyArray )
+			if ( _gameStatus == GameStatusConst.GAME_STATUS_RUN )
 			{
-				enemyFlight.updateFlight();
+				FlxG.collide( playerGroup, enemyGroup , enemyCollidePlayer );
+				weaponPackage.update();
+				player.updateFlight();
+				_playerCheck.update();
+				for each( var enemyFlight:BaseFlight in enemyArray )
+				{
+					enemyFlight.updateFlight();
+				}
+				if ( _backgroundSprite.y < -330 )
+				{
+					_backgroundSprite.y = 0;
+				}
+				_backgroundSprite.y -= _speedBackGround;
+				
+				_enemyGenerator.update();
 			}
-			if ( _backgroundSprite.y < -330 )
+			else if( _gameStatus == GameStatusConst.GAME_STATUS_OVER )
 			{
-				_backgroundSprite.y = 0;
+				for each( var enemyFlightStop:BaseFlight in enemyArray )
+				{
+					enemyFlightStop.gameStop();
+				}
+				player.gameStop();
+				scoreItem = new ScoreInputItem( this, 100 );
+				_gameStatus = GameStatusConst.GAME_STATUS_INPUT_NAME;
 			}
-			_backgroundSprite.y -= _speedBackGround;
-			
-			_enemyGenerator.update();
 		}
 		
 		private function enemyExploded( event:EventEnemyExploded ):void

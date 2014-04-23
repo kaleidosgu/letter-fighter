@@ -44,7 +44,10 @@ package flight
 		}
 		public function gameStop():void
 		{
-			
+			this.velocity.x = 0;
+			this.velocity.y = 0;
+			this.acceleration.x = 0;
+			this.acceleration.y = 0;
 		}
 		public function exploded():void
 		{
