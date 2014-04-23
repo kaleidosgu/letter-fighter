@@ -5,6 +5,7 @@ package state
 	import bullet.WeaponPackage;
 	import dispatcher.GlobalDispatcher;
 	import flight.BaseFlight;
+	import flight.EnemyFlightGenerator;
 	import flight.NormalEnemyFlight;
 	import flight.PlayerFlight;
 	import kale.KaleiTextFormatConst;
@@ -42,9 +43,10 @@ package state
 		private var mgrScore:ScoreManager = new ScoreManager();
 		private var enemyGroup:FlxGroup;
 				
-		private var enemy:FlxSprite;
 		private var _backgroundSprite:FlxSprite;
 		private var _speedBackGround:Number = 0;
+		
+		private var _enemyGenerator:EnemyFlightGenerator = null;
 		public function GamePlayState() 
 		{
 			
@@ -54,6 +56,33 @@ package state
 		{
 			super.create();
 			
+			CreateBackground();
+			
+			_bulletGroup = new FlxGroup();
+			weaponGroup = new FlxGroup();
+			enemyGroup = new FlxGroup();
+			playerGroup = new FlxGroup();
+			
+			GlobalDispatcher.getIns().addEventListener( EventEnemyExploded.EVENT_ENEMY_EXPLODED, enemyExploded );
+			GlobalDispatcher.getIns().addEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
+			
+			player = new PlayerFlight( this, _bulletGroup, 17, 17 );
+			
+			weaponPackage = new WeaponPackage(this, weaponGroup, playerGroup, fontallPicture, player);
+			
+			_playerCheck = new PlayerBulletCheck( _bulletGroup, enemyGroup, this );
+			
+			add( player );
+			playerGroup.add( player );
+			
+			_scoreBill = new ScoreBillBoard( 0, 0, 100, "" );
+			add( _scoreBill );
+			
+			_enemyGenerator = new EnemyFlightGenerator( enemyArray, enemyGroup, mgrScore, player, this );
+		}
+		
+		private function CreateBackground():void
+		{
 			_backgroundSprite = new FlxSprite( 0, 0 );
 			_backgroundSprite.loadGraphic( backgroundPicture, true, true, 600, 600 );
 			
@@ -64,29 +93,6 @@ package state
 			_backgroundSprite.maxVelocity.x = 100;
 			_backgroundSprite.maxVelocity.y = 100;
 			add( _backgroundSprite );
-			
-			_bulletGroup = new FlxGroup();
-			
-			weaponGroup = new FlxGroup();
-			weaponPackage = new WeaponPackage(this, weaponGroup, playerGroup, fontallPicture, getWeaponTrig );
-			
-			GlobalDispatcher.getIns().addEventListener( EventEnemyExploded.EVENT_ENEMY_EXPLODED, enemyExploded );
-			GlobalDispatcher.getIns().addEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
-			enemyGroup = new FlxGroup();
-			_playerCheck = new PlayerBulletCheck( _bulletGroup, enemyGroup, this );
-			
-			player = new PlayerFlight( this, _bulletGroup, 17, 17 );
-			add( player );
-			playerGroup = new FlxGroup();
-			playerGroup.add( player );
-			
-			_scoreBill = new ScoreBillBoard( 0, 0, 100, "" );
-			add( _scoreBill );
-			
-			
-			enemy = new NormalEnemyFlight(mgrScore, this,30, 100);
-			enemyGroup.add( enemy );
-			this.add( enemy );
 		}
 		
 		override public function update():void
@@ -104,6 +110,8 @@ package state
 				_backgroundSprite.y = 0;
 			}
 			_backgroundSprite.y -= _speedBackGround;
+			
+			_enemyGenerator.update();
 		}
 		
 		private function enemyExploded( event:EventEnemyExploded ):void

@@ -11,29 +11,30 @@ package bullet
 	 */
 	public class PlayerBulletCheck 
 	{
-		private var _group:FlxGroup = null;
-		private var _collideGroup:FlxGroup = null;
+		[Embed(source = "../../res/sound/explosion.mp3")] private var explosion:Class;
+		private var _bulletGroup:FlxGroup = null;
+		private var _enemyGroup:FlxGroup = null;
 		private var _state:FlxState = null;
-		public function PlayerBulletCheck( group:FlxGroup, collideGroup:FlxGroup, state:FlxState ) 
+		public function PlayerBulletCheck( group:FlxGroup, enemyGroupExternal:FlxGroup, state:FlxState ) 
 		{
-			_group = group;
-			_collideGroup = collideGroup;
+			_bulletGroup = group;
+			_enemyGroup = enemyGroupExternal;
 			_state = state;
 		}
 		
 		public function update():void
 		{
-			FlxG.collide( _group, _collideGroup , enemyCollideBullet );
+			FlxG.collide( _bulletGroup, _enemyGroup , enemyCollideBullet );
 		}
 		
-		public function get collideGroup():FlxGroup 
+		public function get enemyGroup():FlxGroup 
 		{
-			return _collideGroup;
+			return _enemyGroup;
 		}
 		
-		public function set collideGroup(value:FlxGroup):void 
+		public function set enemyGroup(value:FlxGroup):void 
 		{
-			_collideGroup = value;
+			_enemyGroup = value;
 		}
 		
 		private function enemyCollideBullet( flxobj1:FlxObject, flxobj2:FlxObject ):void
@@ -42,9 +43,12 @@ package bullet
 			{
 				var baseFlight:BaseFlight = flxobj2 as BaseFlight;
 				baseFlight.exploded();
-				_collideGroup.remove( flxobj2 );
+				_enemyGroup.remove( flxobj2 );
+				
+				FlxG.play( explosion );
+				_state.remove( flxobj1 );
+				_bulletGroup.remove( flxobj1 );
 			}
-			_state.remove( flxobj1 );
 		}
 	}
 

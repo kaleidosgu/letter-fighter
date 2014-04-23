@@ -19,6 +19,7 @@ package state
 		private var _numberTickCounts:Number = 2;
 		private var _tickStart:Boolean = false;
 		private var _arrayTickKey:Array = new Array();
+		[Embed(source = "../../res/sound/gameStart.mp3")] private static var startSound:Class;
 		public function GameStartState() 
 		{
 			
@@ -57,6 +58,7 @@ package state
 			if ( FlxG.keys.justReleased(_keyStringStartGame) )
 			{
 				_tickStart = true;
+				FlxG.play( startSound );
 			}
 			if ( _tickStart )
 			{
@@ -73,7 +75,7 @@ package state
 				}
 				if ( _numberTickCounts < 0 )
 				{
-					FlxG.switchState(new PlayState());
+					FlxG.switchState(new GamePlayState());
 				}
 			}
 		}

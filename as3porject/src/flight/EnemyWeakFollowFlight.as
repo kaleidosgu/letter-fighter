@@ -12,6 +12,7 @@ package flight
 		public function EnemyWeakFollowFlight(mgr:ScoreManager, state:FlxState,X:Number=0,Y:Number=0,SimpleGraphic:Class=null) 
 		{
 			super( mgr, state, X, Y, SimpleGraphic );
+			enemyScore = 10;
 		}
 		
 		override public function updateFlight():void

@@ -14,7 +14,7 @@ package
 	{
 		public function Main()
 		{
-			super(320, 240, GameTestState, 1, 20, 20);
+			super(320, 240, GamePlayState, 1, 20, 20);
 			//super(320, 240, GamePlayState, 1, 20, 20);
 			//super(320, 240, PlayState, 1, 20, 20);
 		}

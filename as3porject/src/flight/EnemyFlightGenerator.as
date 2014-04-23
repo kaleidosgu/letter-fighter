@@ -21,11 +21,11 @@ package flight
 		private var _gameState:FlxState = null;
 		private var _arrayX:Array = new Array();
 		private var _arrayY:Array = new Array();
-		public function EnemyFlightGenerator( enemyArray:Array, enemyGroup:FlxGroup, scoreMgr:ScoreManager, playerFlight:PlayerFlight,
+		public function EnemyFlightGenerator( enemyArray:Array, enemyExternalGroup:FlxGroup, scoreMgr:ScoreManager, playerFlight:PlayerFlight,
 			gameState:FlxState ) 
 		{
 			_enemyArray = enemyArray;
-			_enemyGroup = enemyGroup;
+			_enemyGroup = enemyExternalGroup;
 			_scoreMgr = scoreMgr;
 			_playerFlight = playerFlight;
 			_gameState = gameState;
@@ -89,6 +89,7 @@ package flight
 				enemyAdded.playerFlight = _playerFlight;
 				_gameState.add( enemyAdded );
 				_enemyArray.push ( enemyAdded );	
+				_enemyGroup.add( enemyAdded );
 			}
 		}
 	}

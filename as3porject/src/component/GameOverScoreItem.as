@@ -17,6 +17,7 @@ package component
 		private var _scoreTextField:FlxText = null;
 		private var _posY:Number = 0;
 		private var _diff:Number = 5;
+		private var enterCharCode:String = "";
 		public function GameOverScoreItem() 
 		{
 			var posX:Number = 15;
@@ -31,6 +32,7 @@ package component
 			
 			add( _scoreTextField );
 			add( _nameTextField );
+			enterCharCode = String.fromCharCode( Keyboard.ENTER );
 		}
 		/*override public function create():void
 		{
@@ -39,7 +41,6 @@ package component
 		
 		public function setNameText( listRank:int, name:String ):void
 		{
-			var enterCharCode:String = String.fromCharCode( Keyboard.ENTER );
 			if ( name == enterCharCode )
 			{
 				name = "UnnamedPlayer";

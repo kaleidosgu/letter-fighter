@@ -4,6 +4,7 @@ package bullet
 	 * ...
 	 * @author kaleidos
 	 */
+	import flight.PlayerFlight;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
@@ -11,20 +12,24 @@ package bullet
 	import org.flixel.FlxG;
 	public class WeaponPackage 
 	{
+		[Embed(source = "../../res/sound/Powerup.mp3")] private var powerup:Class;
+		
 		private var _state:FlxState = null;
-		private var _sameTypeGroup:FlxGroup = null;
-		private var _collideGroup:FlxGroup = null;
+		private var _weaponGroup:FlxGroup = null;
+		private var _playerGroup:FlxGroup = null;
 		private var _class:Class = null;
 		private var _constTickTime:Number = 2;
 		private var _tickCounts:Number = _constTickTime;
 		private var _functionCollid:Function = null;
-		public function WeaponPackage( state:FlxState, group:FlxGroup, collideGroup:FlxGroup, className:Class, collidFunc:Function ) 
+		private var _player:PlayerFlight = null;
+		public function WeaponPackage( state:FlxState, group:FlxGroup, playerGroup:FlxGroup, className:Class, player:PlayerFlight ) 
 		{
 			_state = state;
-			_sameTypeGroup = group;
-			_collideGroup = collideGroup;
+			_weaponGroup = group;
+			_playerGroup = playerGroup;
 			_class = className;
-			_functionCollid = collidFunc;
+			//_functionCollid = collidFunc;
+			_player = player;
 		}
 		public function generateWeapon():void
 		{
@@ -42,7 +47,7 @@ package bullet
 			var randomWeapon:int = int(Math.random() * ( 4 - 1 ) + 1 )
 			_weapon.weaponType = randomWeapon;
 			_state.add( _weapon );
-			_sameTypeGroup.add( _weapon );
+			_weaponGroup.add( _weapon );
 			return _weapon;
 		}
 		public function update():void
@@ -53,22 +58,28 @@ package bullet
 				_tickCounts = _constTickTime;
 				generateWeapon();
 			}
-			FlxG.collide( _sameTypeGroup, _collideGroup , _functionCollid );
+			FlxG.collide( _weaponGroup, _playerGroup , weaponCollidePlayerEvent );
 		}
 		
-		private function collideTrigged( flxobj1:FlxObject, flxobj2:FlxObject ):void
+		private function weaponCollidePlayerEvent( flxobj1:FlxObject, flxobj2:FlxObject ):void
 		{
 			if ( flxobj1 is WeaponInstance )
 			{
 				var weaponIns1:WeaponInstance = flxobj1 as WeaponInstance;
+				_player.flightGetWeapon( weaponIns1.weaponType );
 				_state.remove( flxobj1 );
-				weaponIns1 = null;
+				_weaponGroup.remove( flxobj1 );
+				FlxG.play( powerup );
+				weaponIns2 = null;
 			}
 			else if ( flxobj2 is WeaponInstance )
 			{
 				var weaponIns2:WeaponInstance = flxobj2 as WeaponInstance;
+				_player.flightGetWeapon( weaponIns2.weaponType );
 				_state.remove( flxobj2 );
+				_weaponGroup.remove( flxobj1 );
 				weaponIns2 = null;
+				FlxG.play( powerup );
 			}
 		}
 		
