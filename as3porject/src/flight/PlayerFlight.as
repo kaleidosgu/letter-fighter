@@ -13,6 +13,7 @@ package flight
 	{
 		[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
 		[Embed(source = "../../res/image/bullet3.png")] private static var bulletPicture:Class;
+		[Embed(source = "../../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
 		
 		private var _weapon:BaseWeapon = null;
 		private var _state:FlxState = null;
@@ -95,6 +96,7 @@ package flight
 			if ( FlxG.keys.justReleased("SPACE" ) )
 			{
 				_weapon.fire( bulletPicture, x + width / 2, y + height + 2 );
+				FlxG.play( SoundEffect );
 			}
 		}		
 	}

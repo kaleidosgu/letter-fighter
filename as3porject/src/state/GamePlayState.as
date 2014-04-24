@@ -31,7 +31,6 @@ package state
 	{
 		
 		[Embed(source = "../../res/image/enemy/fontall.png")] private static var fontallPicture:Class;
-		[Embed(source = "../../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
 		[Embed(source = "../../res/music/kraftwerk_aerodynamik.mp3")] private var BackgroundMusic:Class;
 		[Embed(source = "../../res/image/startcloud3.png")] private static var backgroundPicture:Class;
 		private var weaponPackage:WeaponPackage = null;
@@ -84,6 +83,7 @@ package state
 			add( _scoreBill );
 			
 			_enemyGenerator = new EnemyFlightGenerator( enemyArray, enemyGroup, mgrScore, player, this );
+			FlxG.play( BackgroundMusic );
 		}
 		
 		private function CreateBackground():void
