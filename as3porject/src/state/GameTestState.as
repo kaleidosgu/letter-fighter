@@ -3,6 +3,7 @@ package state
 	import bullet.BaseBullet;
 	import bullet.BaseWeapon;
 	import bullet.WeaponInstance;
+	import component.BulletEnergyComponent;
 	import component.ScoreInputItem;
 	import dispatcher.GlobalDispatcher;
 	import flash.events.KeyboardEvent;
@@ -34,6 +35,7 @@ package state
 	 */
 	public class GameTestState extends FlxState 
 	{
+		[Embed(source = "../../res/image/bulletSlot.png")] private static var slotPicture:Class;
 		private var enemy:FlxSprite;
 		private var mgrScore:ScoreManager = new ScoreManager();
 		private var enemyArray:Array = new Array();
@@ -48,6 +50,11 @@ package state
 		private var _lastCharCode:uint = 0;
 		
 		private var scoreItem:ScoreInputItem = null;
+		
+		private var _slot:FlxSprite = null;
+		
+		private var _bullet:BulletEnergyComponent = null;
+		
 		
 		public function GameTestState() 
 		{
@@ -85,18 +92,25 @@ package state
 				}
 			}
 			
+			_bullet.update();
+			
 		}
 		
 		override public function create():void
 		{
 			super.create();
-						
+
 			player = new PlayerFlight( this, null, 17, 17 );
 			add( player );
 			
 			enemyGenerator = new EnemyFlightGenerator( enemyArray, _enemyGroup, mgrScore, player, this );
 			
 			scoreItem = new ScoreInputItem( this, 100 );
+			
+			_bullet = new BulletEnergyComponent( this );
+			_bullet.create( 30, 5, 60, 15 );
+			_bullet.updateBullet = true;
+			_bullet.maxTime = 5;
 			
 		}
 		override public function destroy():void
