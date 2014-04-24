@@ -1,5 +1,7 @@
 package component 
 {
+	import dispatcher.GlobalDispatcher;
+	import letter_event.EventBulletEnergyEmpty;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
@@ -89,7 +91,9 @@ package component
 		{
 			_currentAllTick = 0;
 			_currentTick = 0;
-			//updateBullet = false;
+			updateBullet = false;
+			var eventEmpty:EventBulletEnergyEmpty = new EventBulletEnergyEmpty(EventBulletEnergyEmpty.EVENT_BULLET_ENERGY_EMPTY );
+			GlobalDispatcher.getIns().dispatchEvent( eventEmpty ); 
 		}
 		
 		public function get updateBullet():Boolean 
@@ -99,9 +103,10 @@ package component
 		
 		public function set updateBullet(value:Boolean):void 
 		{
+			_currentTick = 0;
+			_currentAllTick = 0;
 			if ( value == false )
 			{
-				_currentTick = 0;
 			}
 			_updateBullet = value;
 		}

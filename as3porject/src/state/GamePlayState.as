@@ -1,18 +1,23 @@
 package state 
 {
+	import bullet.BaseWeapon;
 	import bullet.PlayerBulletCheck;
 	import bullet.WeaponInstance;
 	import bullet.WeaponPackage;
+	import component.BulletEnergyComponent;
 	import component.ScoreInputItem;
 	import dispatcher.GlobalDispatcher;
+	import flash.events.Event;
 	import flight.BaseFlight;
 	import flight.EnemyFlightGenerator;
 	import flight.NormalEnemyFlight;
 	import flight.PlayerFlight;
 	import gameConst.GameStatusConst;
 	import kale.KaleiTextFormatConst;
+	import letter_event.EventBulletEnergyEmpty;
 	import letter_event.EventEnemyExploded;
 	import letter_event.EventEnemyScoreOver;
+	import letter_event.EventPlayerGetWeapon;
 	import manager.ScoreManager;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
@@ -51,6 +56,7 @@ package state
 		private var _gameStatus:uint = GameStatusConst.GAME_STATUS_RUN;
 		
 		private var scoreItem:ScoreInputItem = null;
+		private var _bullet:BulletEnergyComponent = null;
 		public function GamePlayState() 
 		{
 			
@@ -69,6 +75,9 @@ package state
 			
 			GlobalDispatcher.getIns().addEventListener( EventEnemyExploded.EVENT_ENEMY_EXPLODED, enemyExploded );
 			GlobalDispatcher.getIns().addEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
+			GlobalDispatcher.getIns().addEventListener( EventPlayerGetWeapon.EVENT_PLAYER_GET_WEAPON, playerGetWeapon );
+			GlobalDispatcher.getIns().addEventListener( EventBulletEnergyEmpty.EVENT_BULLET_ENERGY_EMPTY, weaponEmpty );
+			
 			
 			player = new PlayerFlight( this, _bulletGroup, 17, 17 );
 			
@@ -84,8 +93,20 @@ package state
 			
 			_enemyGenerator = new EnemyFlightGenerator( enemyArray, enemyGroup, mgrScore, player, this );
 			FlxG.play( BackgroundMusic );
+			
+			_bullet = new BulletEnergyComponent( this );
+			_bullet.create( 30, 5, 60, 15 );
 		}
-		
+		private function weaponEmpty( event:Event ):void
+		{
+			player.flightGetWeapon( BaseWeapon.WEAPON_TYPE_I );
+		}
+		private function playerGetWeapon( event:EventPlayerGetWeapon ):void
+		{
+			var weaponType:int = event.weaponType;
+			_bullet.updateBullet = true;
+			_bullet.maxTime = event.weaponTime;
+		}
 		private function CreateBackground():void
 		{
 			_backgroundSprite = new FlxSprite( 0, 0 );
@@ -137,6 +158,9 @@ package state
 				scoreItem = new ScoreInputItem( this, 100 );
 				_gameStatus = GameStatusConst.GAME_STATUS_INPUT_NAME;
 			}
+			
+			
+			_bullet.update();
 		}
 		
 		private function enemyExploded( event:EventEnemyExploded ):void

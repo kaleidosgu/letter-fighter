@@ -107,11 +107,6 @@ package state
 			
 			scoreItem = new ScoreInputItem( this, 100 );
 			
-			_bullet = new BulletEnergyComponent( this );
-			_bullet.create( 30, 5, 60, 15 );
-			_bullet.updateBullet = true;
-			_bullet.maxTime = 5;
-			
 		}
 		override public function destroy():void
 		{

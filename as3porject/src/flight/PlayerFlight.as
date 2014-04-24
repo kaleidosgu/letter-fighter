@@ -1,6 +1,8 @@
 package flight 
 {
 	import bullet.BaseWeapon;
+	import dispatcher.GlobalDispatcher;
+	import letter_event.EventPlayerGetWeapon;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxG;
@@ -57,6 +59,7 @@ package flight
 		public function flightGetWeapon ( weaponType:int ):void
 		{
 			_weapon.weaponType = weaponType ;
+			var weaponTime:Number = 0;
 			if ( weaponType == BaseWeapon.WEAPON_TYPE_I )
 			{
 				color = 0xff0000;
@@ -64,12 +67,17 @@ package flight
 			else if ( weaponType == BaseWeapon.WEAPON_TYPE_X )
 			{
 				color = 0x00ff00;
+				weaponTime = 5;
 			}
 			else if ( weaponType == BaseWeapon.WEAPON_TYPE_Y )
 			{
 				color = 0x0000ff;
+				weaponTime = 10;
 			}
-			
+			var getWeaponEvent:EventPlayerGetWeapon = new EventPlayerGetWeapon(EventPlayerGetWeapon.EVENT_PLAYER_GET_WEAPON );
+			getWeaponEvent.weaponType = weaponType;
+			getWeaponEvent.weaponTime = weaponTime;
+			GlobalDispatcher.getIns().dispatchEvent( getWeaponEvent ); 
 		}
 		
 		public function updateFlight():void
