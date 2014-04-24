@@ -12,6 +12,7 @@ package bullet
 		public static var WEAPON_TYPE_I:int = 1;
 		public static var WEAPON_TYPE_Y:int = 2;
 		public static var WEAPON_TYPE_X:int = 3;
+		public static var WEAPON_TYPE_DEFAULT:int = WEAPON_TYPE_I;
 		private var _addState:FlxState;
 		private var _weaponType:int = 0;
 		private var _bulletGroup:FlxGroup = null;

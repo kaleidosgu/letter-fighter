@@ -99,7 +99,7 @@ package state
 		}
 		private function weaponEmpty( event:Event ):void
 		{
-			player.flightGetWeapon( BaseWeapon.WEAPON_TYPE_I );
+			player.flightGetWeapon( BaseWeapon.WEAPON_TYPE_DEFAULT );
 		}
 		private function playerGetWeapon( event:EventPlayerGetWeapon ):void
 		{
@@ -155,7 +155,7 @@ package state
 					enemyFlightStop.gameStop();
 				}
 				player.gameStop();
-				scoreItem = new ScoreInputItem( this, 100 );
+				scoreItem = new ScoreInputItem( this, int(_scoreBill.text) );
 				_gameStatus = GameStatusConst.GAME_STATUS_INPUT_NAME;
 			}
 			
