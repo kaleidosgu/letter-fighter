@@ -13,7 +13,9 @@ package flight
 	 */
 	public class PlayerFlight extends FlxSprite implements BaseFlight 
 	{
-		[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
+		//[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
+		[Embed(source = "../../res/image/flight3.png")] private static var ImgFighter:Class;
+		
 		[Embed(source = "../../res/image/bullet3.png")] private static var bulletPicture:Class;
 		[Embed(source = "../../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
 		
@@ -37,13 +39,16 @@ package flight
 			maxVelocity.y = 200;
 			
 			addAnimation("flying", [0, 1], 10);
-			play("flying");
+			//play("flying");
 			_state = state;
 			_state.add( this );
 			_weapon = new BaseWeapon();
 			_weapon.addState = _state;
 			_weapon.weaponType = BaseWeapon.WEAPON_TYPE_I;
 			_weapon.bulletGroup = bulletGroup;
+			
+			addAnimation("destroy", [2, 3, 4], 5 );
+			play("flying");
 		}
 		public function gameStop():void
 		{

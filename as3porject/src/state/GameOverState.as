@@ -4,6 +4,8 @@ package state
 	import flash.events.KeyboardEvent;
 	import kale.fileUtil.KaleResourceDataRead;
 	import kale.fileUtil.KaleTxtResourcePath;
+	import manager.UserData;
+	import manager.UserDataManager;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
 	import org.flixel.FlxG;
@@ -41,33 +43,33 @@ package state
 			FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
 		}
 		
-		private function addScoreForPlayer( indexRank:int, name:String, score:Number ):void
+		private function addScoreForPlayer( indexRank:int, name:String, score:Number, current:Boolean ):void
 		{
 			var nameLine:GameOverScoreItem = new GameOverScoreItem();
 			nameLine.setPos ( 0, 10 + 20 * indexRank );
 			nameLine.setScore( score );
 			nameLine.setNameText( indexRank, name );
+			nameLine.setCurrentUser( current );
 			_arrayItem.push( nameLine );
 			add( nameLine );
 		}
 		
 		private function initScore( scoreString:String ):void
 		{
-			var rowsArray:Array = scoreString.split("\n");
+			var userDataArray:Array = UserDataManager.getIns().userDataArray;
 			var rowIndex:int = 1;
-			for each( var rowData:String in rowsArray )
+			for each( var userData:UserData in userDataArray )
 			{
-				var colIndex:int = 0;
-				var colArray:Array = rowData.split(",");
-				
-				if ( colArray.length == 2 )
-				{
-					var playerName:String = colArray[0] as String;
-					var scoreString:String = colArray[1];
-					var score:Number = Number(scoreString);
-					addScoreForPlayer( rowIndex, playerName, score );
-				}
+				var playerName:String = userData.userName;
+				var scoreString:String = userData.userScore.toString();
+				var score:Number = Number(scoreString);
+				var isCurrentUser:Boolean = userData.currentUser;
+				addScoreForPlayer( rowIndex, playerName, score, isCurrentUser );
 				rowIndex++;
+				if ( rowIndex >= 10 )
+				{
+					break;
+				}
 			}
 		}
 		

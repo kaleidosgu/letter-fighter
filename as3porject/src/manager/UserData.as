@@ -8,6 +8,7 @@ package manager
 	{
 		private var _userName:String = "";
 		private var _userScore:Number = 0;
+		private var _currentUser:Boolean = false;
 		public function UserData( name:String, score:Number ) 
 		{
 			_userName = name;
@@ -32,6 +33,16 @@ package manager
 		public function set userScore(value:Number):void 
 		{
 			_userScore = value;
+		}
+		
+		public function get currentUser():Boolean 
+		{
+			return _currentUser;
+		}
+		
+		public function set currentUser(value:Boolean):void 
+		{
+			_currentUser = value;
 		}
 		
 		public function clone():UserData

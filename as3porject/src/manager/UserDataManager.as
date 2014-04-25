@@ -12,6 +12,7 @@ package manager
 		private static var _userData:UserDataManager = null;
 		private var _scoreLimitCounts:int = 10;
 		private var _scoreArray:Array = new Array();
+		private var _userDataArray:Array = new Array();
 		public function UserDataManager() 
 		{
 			
@@ -59,19 +60,19 @@ package manager
 		public function scoreProcess( newScore:Number, name:String ):void
 		{
 			var userdata:UserData = new UserData( name, newScore );
+			userdata.currentUser = true;
 			
-			var processArray:Array = new Array( );	
 			var insertOK:Boolean = true;
 			for each( var userIt:UserData in _scoreArray )
 			{
-				processArray.push ( userIt.clone() );
+				_userDataArray.push ( userIt.clone() );
 			}
 			if ( insertOK )
 			{
-				processArray.push ( userdata );	
+				_userDataArray.push ( userdata );	
 			}
-			processArray.sort( sortFunction );
-			writeScoreIntoFile( processArray );
+			_userDataArray.sort( sortFunction );
+			writeScoreIntoFile( _userDataArray );
 		}
 		
 		private function sortFunction( userLeft:UserData, userRight:UserData ):int
@@ -106,6 +107,16 @@ package manager
 			
 			var dataWrite:KaleResourceDataWrite = new KaleResourceDataWrite();
 			dataWrite.writeDataToFile( filePathString, stringResult );
+		}
+		
+		public function get userDataArray():Array 
+		{
+			return _userDataArray;
+		}
+		
+		public function set userDataArray(value:Array):void 
+		{
+			_userDataArray = value;
 		}
 		
 	}

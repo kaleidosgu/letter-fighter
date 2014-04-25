@@ -39,6 +39,12 @@ package component
 			super.create();
 		}*/
 		
+		public function setCurrentUser( current:Boolean ):void
+		{
+			var colorText:uint = current ? 0xffff00 : 0xffffff;
+			_nameTextField.color = colorText;
+			_scoreTextField.color = colorText;
+		}
 		public function setNameText( listRank:int, name:String ):void
 		{
 			if ( name == enterCharCode )
