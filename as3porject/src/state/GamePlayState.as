@@ -79,7 +79,7 @@ package state
 			GlobalDispatcher.getIns().addEventListener( EventBulletEnergyEmpty.EVENT_BULLET_ENERGY_EMPTY, weaponEmpty );
 			
 			
-			player = new PlayerFlight( this, _bulletGroup, 17, 17 );
+			player = new PlayerFlight( this, _bulletGroup, FlxG.width / 2 , FlxG.height / 2 );
 			
 			weaponPackage = new WeaponPackage(this, weaponGroup, playerGroup, fontallPicture, player);
 			

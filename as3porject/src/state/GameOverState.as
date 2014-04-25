@@ -38,6 +38,7 @@ package state
 		private function keyBoardUP( event:KeyboardEvent ):void
 		{
 			FlxG.switchState( new GameStartState() );
+			FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
 		}
 		
 		private function addScoreForPlayer( indexRank:int, name:String, score:Number ):void
@@ -73,19 +74,17 @@ package state
 		override public function update():void
 		{
 			super.update();
-			if ( FlxG.keys.justReleased("SPACE" ) )
-			{
-				//FlxG.switchState(new PlayState());
-			}
 		}
 		override public function destroy():void
 		{
 			super.destroy();
 			
-			for each( var item:GameOverScoreItem in _arrayItem )
+			var arrayLength:uint = _arrayItem.length;
+			for ( var itemIndex:uint = 0; itemIndex < arrayLength; itemIndex++ )
 			{
-				item = null;
+				_arrayItem[itemIndex] = null;
 			}
+			_arrayItem.length = 0;
 		}
 	}
 

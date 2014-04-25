@@ -46,7 +46,7 @@ package component
 			redBar.origin.x = redBar.origin.y = 0; //Zero out the origin
 			_state.add(redBar);
 			_originalWidth = width;
-			redBar.scale.x = _originalWidth;
+			redBar.scale.x = 0;
 		}
 		
 		private function updateBulletEnergy( current:Number, max:Number ):void

@@ -25,7 +25,7 @@ package component
 			scoreText.alignment = KaleiTextFormatConst.ALIGH_CENTER;
 			scoreText.size = 14;
 			
-			notifyText = new FlxText( 0, 80, FlxG.width, "Enter your name..." );
+			notifyText = new FlxText( 0, 80, FlxG.width, "Game is over. Enter your name..." );
 			notifyText.alignment = KaleiTextFormatConst.ALIGH_CENTER;
 			notifyText.size = 14;
 			
