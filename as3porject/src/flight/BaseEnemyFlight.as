@@ -15,8 +15,9 @@ package flight
 		[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
 		protected var _scoreManager:ScoreManager = null;
 		protected var _state:FlxState = null;
-		private var _enemyScore:int = 0;
 		private var _playerFlight:PlayerFlight = null;
+		
+		private var _enemyScore:int = 0;
 		protected var _velocityX:Number = 40;
 		protected var _velocityY:Number = 40;
 		public function BaseEnemyFlight( mgr:ScoreManager, state:FlxState,X:Number=0,Y:Number=0,SimpleGraphic:Class=null ) 
@@ -43,6 +44,14 @@ package flight
 			this.addAnimation("flying", [0, 1], 40);
 			this.play("flying");
 			_state.add( this );
+		}
+		override public function destroy():void
+		{
+			super.destroy();
+			
+			_scoreManager = null;
+			_state = null;
+			_playerFlight = null;
 		}
 		public function gameStop():void
 		{

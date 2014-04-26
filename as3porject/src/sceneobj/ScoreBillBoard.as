@@ -26,6 +26,13 @@ package sceneobj
 			this.text = event.scoreValue.toString();
 		}
 		
+		override public function destroy():void
+		{
+			super.destroy();
+			GlobalDispatcher.getIns().removeEventListener( PlayerGetScoreEvent.PLAYER_GET_SCORE, getScoreEvent );
+		}
+		
+		
 	}
 
 }

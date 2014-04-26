@@ -13,9 +13,7 @@ package flight
 	 */
 	public class PlayerFlight extends FlxSprite implements BaseFlight 
 	{
-		//[Embed(source = "../../res/image/fighter2.png")] private static var ImgFighter:Class;
 		[Embed(source = "../../res/image/flight3.png")] private static var ImgFighter:Class;
-		
 		[Embed(source = "../../res/image/bullet3.png")] private static var bulletPicture:Class;
 		[Embed(source = "../../res/sound/Hit_Hurt15.mp3")] private var SoundEffect:Class;
 		
@@ -39,7 +37,6 @@ package flight
 			maxVelocity.y = 200;
 			
 			addAnimation("flying", [0, 1], 10);
-			//play("flying");
 			_state = state;
 			_state.add( this );
 			_weapon = new BaseWeapon();
@@ -112,6 +109,14 @@ package flight
 				FlxG.play( SoundEffect );
 			}
 		}		
+		override public function destroy():void
+		{
+			super.destroy();
+			
+			_weapon.destroy();
+			_weapon = null;
+			_state = null;
+		}
 	}
 
 }

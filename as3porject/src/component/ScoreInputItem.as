@@ -64,6 +64,11 @@ package component
 				enterName( scoreText.text );
 			}
 		}
+		public function destroy():void
+		{
+			FlxG.stage.removeEventListener( KeyboardEvent.KEY_DOWN, keyBoardDown );
+			FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
+		}
 		
 	}
 

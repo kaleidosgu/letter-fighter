@@ -60,9 +60,6 @@ package component
 		}
 		public function destroy():void
 		{
-			_state.remove( whiteFrame );
-			_state.remove( blackInterior );
-			_state.remove( redBar );
 			whiteFrame = null;
 			blackInterior = null;
 			redBar = null;

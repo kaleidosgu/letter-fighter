@@ -58,6 +58,8 @@ package sceneobj
 		override public function destroy():void
 		{
 			super.destroy();
+			
+			_state = null;
 		}
 	}
 

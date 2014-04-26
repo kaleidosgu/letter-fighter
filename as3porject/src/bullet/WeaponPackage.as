@@ -82,7 +82,14 @@ package bullet
 				FlxG.play( powerup );
 			}
 		}
-		
+		public function destroy():void
+		{
+			_state = null;
+			_weaponGroup = null;
+			_playerGroup = null;
+			_functionCollid = null;
+			_player = null;
+		}
 	}
 
 }

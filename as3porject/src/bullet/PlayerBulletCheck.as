@@ -50,6 +50,13 @@ package bullet
 				_bulletGroup.remove( flxobj1 );
 			}
 		}
+		
+		public function destroy():void
+		{
+			_bulletGroup = null;
+			_enemyGroup = null;
+			_state = null;			
+		}
 	}
 
 }

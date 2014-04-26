@@ -15,10 +15,13 @@ package state
 		private var _gameTitle:FlxText = null;
 		private var _gameStartNotify:FlxText = null;
 		private var _textAuthor:FlxText = null;
+		private var _notifyText:FlxText = null;
+		private var _arrayTickKey:Array = new Array();
+		
+		
 		private var _keyStringStartGame:String = "G";
 		private var _numberTickCounts:Number = 2;
 		private var _tickStart:Boolean = false;
-		private var _arrayTickKey:Array = new Array();
 		[Embed(source = "../../res/sound/gameStart.mp3")] private static var startSound:Class;
 		public function GameStartState() 
 		{
@@ -32,6 +35,12 @@ package state
 			_gameTitle = new FlxText( 0, 15, FlxG.width, "Letter Fight" );
 			_gameTitle.alignment = KaleiTextFormatConst.ALIGH_CENTER;
 			_gameTitle.size = 20;
+			
+			_notifyText = new FlxText( 0, 40, FlxG.width, "[space] to fire" );
+			_notifyText.alignment = KaleiTextFormatConst.ALIGH_CENTER;
+			_notifyText.size = 14;
+			this.add( _notifyText );
+			
 			
 			_gameStartNotify = new FlxText( 0, 160, FlxG.width, "'" + _keyStringStartGame + "'" + " key start game" );
 			_gameStartNotify.alignment = KaleiTextFormatConst.ALIGH_CENTER;
@@ -83,9 +92,14 @@ package state
 		override public function destroy():void
 		{
 			super.destroy();
+			
 			_gameTitle = null;
 			_gameStartNotify = null;
 			_textAuthor = null;
+			_notifyText = null;
+			
+			_arrayTickKey.length = 0;
+			_arrayTickKey = null;
 		}
 	}
 

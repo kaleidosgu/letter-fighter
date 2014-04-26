@@ -40,23 +40,25 @@ package state
 		[Embed(source = "../../res/image/startcloud3.png")] private static var backgroundPicture:Class;
 		private var weaponPackage:WeaponPackage = null;
 		private var _playerCheck:PlayerBulletCheck = null;
-		private var player:PlayerFlight;
+		private var player:PlayerFlight = null;
 		private var playerGroup:FlxGroup = null;
 		private var _scoreBill:ScoreBillBoard = null;
-		private var weaponGroup:FlxGroup;
-		private var _bulletGroup:FlxGroup;	
-		private var enemyArray:Array = new Array();
+		private var weaponGroup:FlxGroup = null;
+		private var _bulletGroup:FlxGroup = null;
 		private var mgrScore:ScoreManager = new ScoreManager();
-		private var enemyGroup:FlxGroup;
+		private var enemyGroup:FlxGroup = null;
 				
 		private var _backgroundSprite:FlxSprite;
-		private var _speedBackGround:Number = 0;
 		
 		private var _enemyGenerator:EnemyFlightGenerator = null;
 		private var _gameStatus:uint = GameStatusConst.GAME_STATUS_RUN;
 		
 		private var scoreItem:ScoreInputItem = null;
 		private var _bullet:BulletEnergyComponent = null;
+		
+		private var enemyArray:Array = new Array();
+		
+		private var _speedBackGround:Number = 0;
 		public function GamePlayState() 
 		{
 			
@@ -176,6 +178,48 @@ package state
 		override public function destroy():void
 		{
 			super.destroy();
+			
+			GlobalDispatcher.getIns().removeEventListener( EventEnemyExploded.EVENT_ENEMY_EXPLODED, enemyExploded );
+			GlobalDispatcher.getIns().removeEventListener( EventEnemyScoreOver.EVENT_ENEMY_SCORE_OVER, enemyScoreOver );
+			GlobalDispatcher.getIns().removeEventListener( EventPlayerGetWeapon.EVENT_PLAYER_GET_WEAPON, playerGetWeapon );
+			GlobalDispatcher.getIns().removeEventListener( EventBulletEnergyEmpty.EVENT_BULLET_ENERGY_EMPTY, weaponEmpty );
+			
+			_enemyGenerator.destroy();
+				
+			weaponPackage.destroy();
+			weaponPackage = null;
+			
+			_playerCheck.destroy();
+			_playerCheck = null;
+			
+			player = null;
+			
+			playerGroup.clear();
+			playerGroup = null;
+			
+			_scoreBill = null;
+			
+			weaponGroup.clear();
+			weaponGroup = null;
+			
+			_bulletGroup.clear();
+			_bulletGroup = null;
+			
+			mgrScore = null;
+			enemyGroup.clear();
+			enemyGroup = null;
+					
+			_backgroundSprite = null;
+			
+			_enemyGenerator = null;
+			
+			scoreItem.destroy();
+			scoreItem = null;
+			_bullet.destroy();
+			_bullet = null;
+			
+			enemyArray.length = 0;
+			enemyArray = null;
 		}
 		private function getWeaponTrig( flxobj1:FlxObject, flxobj2:FlxObject ):void
 		{

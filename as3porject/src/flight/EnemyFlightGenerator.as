@@ -15,12 +15,13 @@ package flight
 		private var _enemyGroup:FlxGroup = null;
 		private var _scoreMgr:ScoreManager = null;
 		private var _weaponGroup:FlxGroup = null;
-		private var _generateEnemyTime:Number = 1;
 		private var _currentEnemyTime:Number = _generateEnemyTime;
 		private var _playerFlight:PlayerFlight = null;
 		private var _gameState:FlxState = null;
 		private var _arrayX:Array = new Array();
 		private var _arrayY:Array = new Array();
+		
+		private var _generateEnemyTime:Number = 1;
 		public function EnemyFlightGenerator( enemyArray:Array, enemyExternalGroup:FlxGroup, scoreMgr:ScoreManager, playerFlight:PlayerFlight,
 			gameState:FlxState ) 
 		{
@@ -35,7 +36,17 @@ package flight
 			_arrayY.push ( 0 );
 			_arrayY.push ( FlxG.height );
 		}
-		
+		public function destroy():void
+		{
+			_enemyArray = null;
+			_enemyGroup = null;
+			_scoreMgr = null;
+			_weaponGroup = null;
+			_playerFlight = null;
+			_gameState = null;
+			_arrayX.length = 0;
+			_arrayY.length = 0;
+		}
 		public function update():void
 		{
 			_currentEnemyTime -= FlxG.elapsed;

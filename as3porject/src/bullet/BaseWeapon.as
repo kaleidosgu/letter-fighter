@@ -20,7 +20,11 @@ package bullet
 		{
 			
 		}
-		
+		public function destroy():void
+		{
+			_addState = null;
+			_bulletGroup = null;
+		}
 		private function generateBullet( graphic:Class, initX:Number, initY:Number, vx:Number, vy:Number ):void
 		{
 			var _bullet:BaseBullet = new BaseBullet();

@@ -39,8 +39,8 @@ package state
 		
 		private function keyBoardUP( event:KeyboardEvent ):void
 		{
-			FlxG.switchState( new GameStartState() );
 			FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
+			FlxG.switchState( new GameStartState() );
 		}
 		
 		private function addScoreForPlayer( indexRank:int, name:String, score:Number, current:Boolean ):void
@@ -73,10 +73,6 @@ package state
 			}
 		}
 		
-		override public function update():void
-		{
-			super.update();
-		}
 		override public function destroy():void
 		{
 			super.destroy();
@@ -87,6 +83,7 @@ package state
 				_arrayItem[itemIndex] = null;
 			}
 			_arrayItem.length = 0;
+			FlxG.stage.removeEventListener( KeyboardEvent.KEY_UP, keyBoardUP );
 		}
 	}
 
