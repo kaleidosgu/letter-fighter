@@ -1,5 +1,5 @@
 1.  子弹类
-2.  继承子弹类的三种子弹(I,X,Y)         demo_finished
+2.  继承子弹类的三种子弹(I,X,Y)         demo_finished(I,X,Y单路，四路，三路发射导弹)
 3.  怪物类                              Finished
 4.  继承怪物类的2种怪物(固定方位移动/非紧贴跟随)        finished
 5.  消灭怪物后可以随机刷出一个子弹      demo_finished
@@ -26,3 +26,7 @@
 26. 如果游戏正在走Y子弹的消耗时间，忽然吃到I。则能量会停止。
 27. 游戏结束画面播放使用工具说明及其地址          (gimp,graphic gale, flixel, freac,bfxr, music:kraftwerk_aerodynamik)
 28. 尝试把state改成成员变量。在switch之前init。不需要每次都new出一个来。(可能需要解决create的问题,create)
+29. 输入名字时有游标功能
+30. 子弹H（先发射到两边，然后从两边往上/下各发射两枚）
+31. 子弹S(蛇形飞行)
+32. 子弹Z(发射远离飞机,然后画出一个Z字)
