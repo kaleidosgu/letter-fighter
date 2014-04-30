@@ -24,3 +24,5 @@
 24. 游戏结束画面播放使用工具说明
 25. 游戏中子弹和敌机超过一定区域后销毁
 26. 如果游戏正在走Y子弹的消耗时间，忽然吃到I。则能量会停止。
+27. 游戏结束画面播放使用工具说明及其地址          (gimp,graphic gale, flixel, freac,bfxr, music:kraftwerk_aerodynamik)
+28. 尝试把state改成成员变量。在switch之前init。不需要每次都new出一个来。(可能需要解决create的问题,create)
